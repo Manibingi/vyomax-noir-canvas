@@ -18,10 +18,10 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Reduced delay to make text appear faster
+    // Set a very short delay to ensure text is visible immediately
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, delay * 500);
+    }, delay * 100); // Even faster animation
 
     return () => clearTimeout(timer);
   }, [delay]);
@@ -29,7 +29,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
   return (
     <span className={cn("inline-block relative overflow-hidden", className)}>
       <span
-        className={`inline-block transform transition-transform duration-700 ease-out ${
+        className={`inline-block transform transition-transform duration-500 ease-out ${
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
       >
