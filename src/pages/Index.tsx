@@ -17,17 +17,22 @@ const Index = () => {
         const sectionTop = section.getBoundingClientRect().top;
         const sectionHeight = section.getBoundingClientRect().height;
         
-        const isVisible = (sectionTop < window.innerHeight - 100) && 
-                         (sectionTop > -sectionHeight + 100);
+        // Updated condition to make sections visible sooner
+        const isVisible = (sectionTop < window.innerHeight - 100);
         
-        if (isVisible && section.classList.contains("opacity-0")) {
+        if (isVisible) {
+          section.classList.remove("opacity-0");
           section.classList.add("animate-fade-in");
         }
       });
     };
 
+    // Initial check to make sections visible on page load
+    setTimeout(() => {
+      handleScroll();
+    }, 100);
+
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // For initial check
     
     return () => {
       window.removeEventListener("scroll", handleScroll);

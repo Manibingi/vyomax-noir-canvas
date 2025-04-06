@@ -18,9 +18,10 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Reduced delay to make text appear faster
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, delay * 1000);
+    }, delay * 500);
 
     return () => clearTimeout(timer);
   }, [delay]);
