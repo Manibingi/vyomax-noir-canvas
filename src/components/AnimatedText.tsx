@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 
 interface AnimatedTextProps {
@@ -15,20 +15,12 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
   delay = 0,
   once = false,
 }) => {
-  // Set visibility to true by default
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    // No delay, immediate visibility
-    setIsVisible(true);
-  }, []);
-
+  // We'll make this component immediately visible without any delay
   return (
-    <span className={cn("inline-block relative overflow-hidden", className)}>
+    <span className={cn("inline-block relative", className)}>
       <span
-        className={`inline-block transform transition-transform duration-300 ease-out ${
-          isVisible ? "translate-y-0" : "translate-y-full"
-        }`}
+        className="inline-block animate-text-reveal"
+        style={{ animationDelay: `${delay * 100}ms` }}
       >
         {text}
       </span>

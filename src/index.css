@@ -48,28 +48,26 @@
 
   body {
     @apply bg-background text-foreground font-sans;
+    color: white;
+    background-color: #171717;
   }
 
   ::selection {
-    @apply bg-black text-white;
+    @apply bg-white/20 text-white;
   }
 }
 
 @layer components {
   .reveal-delay-1 {
-    opacity: 0;
     animation-delay: 0.2s;
   }
   .reveal-delay-2 {
-    opacity: 0;
     animation-delay: 0.4s;
   }
   .reveal-delay-3 {
-    opacity: 0;
     animation-delay: 0.6s;
   }
   .reveal-delay-4 {
-    opacity: 0;
     animation-delay: 0.8s;
   }
 
@@ -88,4 +86,27 @@
   .container-wide {
     @apply mx-auto w-full max-w-7xl;
   }
+  
+  /* Glass effect specific for dark theme */
+  .glass-dark {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+  
+  /* 3D card effect */
+  .card-3d {
+    @apply transition-transform duration-300 perspective-1000 hover:rotate-y-5 hover:rotate-x-5 hover:translate-y-[-5px];
+  }
+}
+
+/* Perspective utility for 3D effects */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.rotate-y-5 {
+  transform: rotateY(5deg);
+}
+
+.rotate-x-5 {
+  transform: rotateX(5deg);
 }
