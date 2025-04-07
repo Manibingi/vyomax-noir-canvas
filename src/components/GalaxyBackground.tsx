@@ -1,159 +1,159 @@
 
 import React, { useEffect, useRef } from "react";
 
-const GalaxyBackground = () => {
+const GalaxyBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
+    // Get canvas context for drawing
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    
-    // Set canvas to cover the entire document
-    const setCanvasSize = () => {
+
+    // Set canvas to full window size
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
-      console.log("Canvas size set to:", canvas.width, canvas.height);
-    };
-    
-    setCanvasSize();
-    window.addEventListener("resize", setCanvasSize);
-    
-    // Star properties - increase count for more stars
-    const stars: Array<{x: number, y: number, size: number, speed: number, opacity: number}> = [];
-    const numStars = 500; // Even more stars for better effect
-    
-    // Initialize stars
-    for (let i = 0; i < numStars; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2.5 + 0.5, // Slightly larger stars
-        speed: Math.random() * 0.15 + 0.05,
-        opacity: Math.random() * 0.9 + 0.1
-      });
-    }
-    
-    // Nebula properties - create more and larger nebulae
-    const nebulae: Array<{x: number, y: number, radius: number, color: string, speed: number}> = [];
-    const numNebulae = 12; // More nebulae
-    
-    // More vibrant nebula colors
-    const nebulaColors = [
-      `rgba(138, 43, 226, 0.15)`, // Purple
-      `rgba(30, 144, 255, 0.15)`, // Blue
-      `rgba(255, 105, 180, 0.15)`, // Pink
-      `rgba(66, 39, 90, 0.15)`, // Dark purple
-      `rgba(75, 0, 130, 0.15)`, // Indigo
-      `rgba(25, 25, 112, 0.15)`, // Midnight blue
-      `rgba(72, 61, 139, 0.15)`, // Dark slate blue
-      `rgba(106, 90, 205, 0.15)` // Slate blue
-    ];
-    
-    // Initialize nebulae
-    for (let i = 0; i < numNebulae; i++) {
-      nebulae.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 350 + 200, // Larger nebulae
-        color: nebulaColors[Math.floor(Math.random() * nebulaColors.length)],
-        speed: Math.random() * 0.03 + 0.01 // Slower movement for more realistic effect
-      });
-    }
-    
-    // Animation loop
-    const animate = () => {
-      // Clear canvas with fade effect for motion blur
-      ctx.fillStyle = "rgba(5, 5, 15, 0.1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Draw and update nebulae first (behind stars)
-      nebulae.forEach(nebula => {
-        // Create radial gradient
+      // Redraw on resize
+      drawBackground();
+      createStars();
+      createGalaxies();
+    };
+
+    // Initial resize
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // Create stars
+    const stars: { x: number; y: number; size: number; opacity: number; speed: number; }[] = [];
+    
+    function createStars() {
+      // Clear previous stars
+      stars.length = 0;
+      
+      // Create plenty of stars (more than before)
+      const numberOfStars = Math.floor(canvas.width * canvas.height / 1000);
+      
+      for (let i = 0; i < numberOfStars; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 3,
+          opacity: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.05
+        });
+      }
+    }
+
+    // Create colorful galaxy clouds
+    const galaxies: { x: number; y: number; size: number; color: string; rotation: number; speed: number; }[] = [];
+    
+    function createGalaxies() {
+      // Clear previous galaxies
+      galaxies.length = 0;
+      
+      // Colors for the nebulae
+      const colors = [
+        "rgba(138, 43, 226, 0.15)", // Purple
+        "rgba(30, 144, 255, 0.15)",  // Blue
+        "rgba(255, 105, 180, 0.15)", // Pink
+        "rgba(75, 0, 130, 0.1)",     // Indigo
+        "rgba(0, 191, 255, 0.1)"     // Deep sky blue
+      ];
+      
+      // Create multiple galaxy nebulae across the canvas
+      const numberOfGalaxies = 8; // Increase number of galaxy effects
+      
+      for (let i = 0; i < numberOfGalaxies; i++) {
+        galaxies.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 300 + 200,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * Math.PI * 2,
+          speed: 0.0005 + Math.random() * 0.001
+        });
+      }
+    }
+
+    // Draw dark space background
+    function drawBackground() {
+      // Create gradient for better space effect
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#020203');
+      gradient.addColorStop(0.5, '#050508');
+      gradient.addColorStop(1, '#020203');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Animate the stars and galaxies
+    function animate() {
+      // Clear and redraw the background
+      drawBackground();
+      
+      // Draw and animate galaxies
+      galaxies.forEach(galaxy => {
+        // Create nebula effect
         const gradient = ctx.createRadialGradient(
-          nebula.x, nebula.y, 0, 
-          nebula.x, nebula.y, nebula.radius
+          galaxy.x, galaxy.y, 0, 
+          galaxy.x, galaxy.y, galaxy.size
         );
         
-        gradient.addColorStop(0, nebula.color);
-        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        gradient.addColorStop(0, galaxy.color);
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
         
-        // Draw nebula
-        ctx.beginPath();
-        ctx.arc(nebula.x, nebula.y, nebula.radius, 0, Math.PI * 2);
+        ctx.save();
+        ctx.translate(galaxy.x, galaxy.y);
+        ctx.rotate(galaxy.rotation);
+        ctx.scale(Math.sin(Date.now() * galaxy.speed) * 0.2 + 1, Math.cos(Date.now() * galaxy.speed) * 0.2 + 1);
+        ctx.translate(-galaxy.x, -galaxy.y);
+        
         ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(galaxy.x, galaxy.y, galaxy.size, 0, Math.PI * 2);
         ctx.fill();
         
-        // Move nebula
-        nebula.y += nebula.speed;
+        ctx.restore();
         
-        // Reset position if nebula moves off screen
-        if (nebula.y - nebula.radius > canvas.height) {
-          nebula.y = -nebula.radius;
-          nebula.x = Math.random() * canvas.width;
-        }
+        // Slowly rotate the galaxies
+        galaxy.rotation += galaxy.speed;
       });
       
-      // Draw and update stars
+      // Draw and animate stars
       stars.forEach(star => {
-        // Draw star with glow for brighter stars
+        // Twinkle effect
+        const twinkle = Math.sin(Date.now() * star.speed) * 0.3 + 0.7;
+        
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * twinkle})`;
         ctx.beginPath();
-        
-        if (star.size > 1.5) {
-          // Add glow to larger stars
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = "rgba(255, 255, 255, 0.7)";
-        } else {
-          ctx.shadowBlur = 0;
-        }
-        
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.fill();
-        
-        // Reset shadow
-        ctx.shadowBlur = 0;
-        
-        // Move star
-        star.y += star.speed;
-        
-        // Reset position if star moves off screen
-        if (star.y > canvas.height) {
-          star.y = 0;
-          star.x = Math.random() * canvas.width;
-        }
       });
       
       requestAnimationFrame(animate);
-    };
-    
+    }
+
+    // Initialize and start animation
+    createStars();
+    createGalaxies();
     animate();
-    
-    // Update canvas size when document height changes
-    const resizeObserver = new ResizeObserver(() => {
-      setCanvasSize();
-    });
-    
-    resizeObserver.observe(document.body);
-    
+
+    // Cleanup on unmount
     return () => {
-      window.removeEventListener("resize", setCanvasSize);
-      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
   return (
-    <canvas 
-      ref={canvasRef} 
-      className="fixed top-0 left-0 w-full h-full -z-10"
-      style={{ 
-        background: "linear-gradient(to bottom, #020203, #050510)",
-        position: "fixed",
-        width: "100%",
-        height: "100%"
-      }}
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
+      style={{ minHeight: "100vh" }}
     />
   );
 };
