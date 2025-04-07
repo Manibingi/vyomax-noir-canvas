@@ -14,7 +14,7 @@ const GalaxyBackground = () => {
     // Set canvas to full screen
     const setCanvasSize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = window.innerHeight * 3; // Make it taller to cover all sections
     };
     
     setCanvasSize();
@@ -22,7 +22,7 @@ const GalaxyBackground = () => {
     
     // Star properties
     const stars: Array<{x: number, y: number, size: number, speed: number, opacity: number}> = [];
-    const numStars = 200;
+    const numStars = 300; // More stars
     
     // Initialize stars
     for (let i = 0; i < numStars; i++) {
@@ -37,20 +37,23 @@ const GalaxyBackground = () => {
     
     // Nebula properties
     const nebulae: Array<{x: number, y: number, radius: number, color: string, speed: number}> = [];
-    const numNebulae = 5;
+    const numNebulae = 8; // More nebulae
     
     // Initialize nebulae
     for (let i = 0; i < numNebulae; i++) {
       nebulae.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 200 + 100,
+        radius: Math.random() * 300 + 150, // Larger radius
         color: [
           `rgba(66, 39, 90, 0.3)`, 
           `rgba(115, 75, 109, 0.3)`, 
           `rgba(23, 42, 99, 0.3)`, 
-          `rgba(90, 24, 154, 0.3)`
-        ][Math.floor(Math.random() * 4)],
+          `rgba(90, 24, 154, 0.3)`,
+          `rgba(138, 43, 226, 0.2)`, // New colors
+          `rgba(30, 144, 255, 0.2)`,
+          `rgba(255, 105, 180, 0.2)`
+        ][Math.floor(Math.random() * 7)],
         speed: Math.random() * 0.05 + 0.01
       });
     }
@@ -120,7 +123,11 @@ const GalaxyBackground = () => {
     <canvas 
       ref={canvasRef} 
       className="fixed top-0 left-0 w-full h-full -z-10"
-      style={{ background: "linear-gradient(to bottom, #050508, #0a0a18)" }}
+      style={{ 
+        background: "linear-gradient(to bottom, #050508, #0a0a18)",
+        height: "100%",
+        position: "fixed"
+      }}
     />
   );
 };
