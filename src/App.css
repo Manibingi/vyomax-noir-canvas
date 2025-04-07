@@ -34,4 +34,41 @@
   }
 }
 
-/* Removed old card and docs styles to prevent conflicts */
+/* Star animation */
+.star {
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.star-small {
+  width: 1px;
+  height: 1px;
+  opacity: 0.7;
+}
+
+.star-medium {
+  width: 2px;
+  height: 2px;
+  opacity: 0.8;
+}
+
+.star-large {
+  width: 3px;
+  height: 3px;
+  opacity: 1;
+  box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.7);
+}
+
+/* Galaxy glow animations */
+.galaxy-purple {
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.3), transparent 70%);
+}
+
+.galaxy-blue {
+  background: radial-gradient(circle, rgba(30, 144, 255, 0.3), transparent 70%);
+}
+
+.galaxy-pink {
+  background: radial-gradient(circle, rgba(255, 105, 180, 0.3), transparent 70%);
+}
