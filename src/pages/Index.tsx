@@ -15,24 +15,35 @@ const Index = () => {
   useEffect(() => {
     // Mark as loaded
     setLoaded(true);
+    
+    // Force the body to have a dark background
+    document.body.style.backgroundColor = "#020203";
+    document.body.style.color = "white";
+    document.documentElement.style.backgroundColor = "#020203";
+    
+    return () => {
+      // Cleanup styles when component unmounts
+      document.body.style.backgroundColor = "";
+      document.body.style.color = "";
+      document.documentElement.style.backgroundColor = "";
+    };
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050508] text-white overflow-x-hidden">
-      {/* Galaxy animated background */}
+    <div className="min-h-screen text-white overflow-x-hidden relative">
+      {/* Galaxy animated background - applied at the top level */}
       <GalaxyBackground />
       
-      <Navbar />
-      
+      {/* Content container with z-index to appear above the background */}
       <div className="relative z-10">
+        <Navbar />
         <Hero />
         <About />
         <Services />
         <Projects />
         <Contact />
+        <Footer />
       </div>
-      
-      <Footer />
     </div>
   );
 };
