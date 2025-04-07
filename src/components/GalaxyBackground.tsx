@@ -12,6 +12,10 @@ const GalaxyBackground: React.FC = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Define stars and galaxies arrays first before using them in any function
+    const stars: { x: number; y: number; size: number; opacity: number; speed: number; }[] = [];
+    const galaxies: { x: number; y: number; size: number; color: string; rotation: number; speed: number; }[] = [];
+    
     // Set canvas to full window size
     const handleResize = () => {
       canvas.width = window.innerWidth;
@@ -23,13 +27,7 @@ const GalaxyBackground: React.FC = () => {
       createGalaxies();
     };
 
-    // Initial resize
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
     // Create stars
-    const stars: { x: number; y: number; size: number; opacity: number; speed: number; }[] = [];
-    
     function createStars() {
       // Clear previous stars
       stars.length = 0;
@@ -49,8 +47,6 @@ const GalaxyBackground: React.FC = () => {
     }
 
     // Create colorful galaxy clouds
-    const galaxies: { x: number; y: number; size: number; color: string; rotation: number; speed: number; }[] = [];
-    
     function createGalaxies() {
       // Clear previous galaxies
       galaxies.length = 0;
@@ -138,9 +134,11 @@ const GalaxyBackground: React.FC = () => {
       requestAnimationFrame(animate);
     }
 
+    // Initial resize
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
     // Initialize and start animation
-    createStars();
-    createGalaxies();
     animate();
 
     // Cleanup on unmount
